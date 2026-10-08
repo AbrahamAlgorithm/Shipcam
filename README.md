@@ -16,6 +16,10 @@ A native macOS screen recorder that hands back a finished demo video. Record you
 
 Shipcam will require macOS 14 or later.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, module rules, code style and how to send a pull request.
+
 ## License
 
 [MIT](LICENSE)
