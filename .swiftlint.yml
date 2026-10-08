@@ -25,6 +25,11 @@ line_length:
   ignores_comments: true
   ignores_urls: true
 
+identifier_name:
+  # Short keys from the data format (cursor.jsonl has one line per cursor sample, so
+  # keys are kept short). Codable properties must match their JSON keys.
+  excluded: [id, t, x, y, w, h, dx, dy]
+
 custom_rules:
   # SwiftPM's import check covers our own modules. This covers Apple's: pure modules
   # may import only Foundation, simd and other pure modules.
