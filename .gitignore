@@ -1,0 +1,18 @@
+# Private build spec (kept local, not published)
+/Demo Recorder — Build Spec.md
+
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode
+DerivedData/
+xcuserdata/
+*.xcuserstate
+build/
+
+# Claude Code local settings
+.claude/settings.local.json
