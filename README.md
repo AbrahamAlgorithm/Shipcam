@@ -1,5 +1,7 @@
 # Shipcam
 
+[![CI](https://github.com/AbrahamAlgorithm/Shipcam/actions/workflows/ci.yml/badge.svg)](https://github.com/AbrahamAlgorithm/Shipcam/actions/workflows/ci.yml)
+
 A native macOS screen recorder that hands back a finished demo video. Record your screen, with or without your face, then polish it in the same app: zooms, cursor, background, captions and audio.
 
 > **Status:** early development. There is nothing to install yet.
