@@ -1,5 +1,6 @@
-# Private build spec (kept local, not published)
+# Non-code docs: planning spec, build journal, learning notes (kept local, not published)
 /Demo Recorder — Build Spec.md
+/docs/
 
 # macOS
 .DS_Store
