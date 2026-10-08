@@ -1,0 +1,44 @@
+# SwiftLint checks code quality. Layout (indentation, wrapping, spacing) belongs to
+# swift-format (.swift-format), so rules that would fight it are turned off.
+
+included:
+  - Packages/ShipcamKit/Package.swift
+  - Packages/ShipcamKit/Sources
+  - Packages/ShipcamKit/Tests
+
+disabled_rules:
+  - trailing_comma # swift-format adds trailing commas to multi-line collections
+
+opt_in_rules:
+  - contains_over_first_not_nil
+  - discouraged_optional_boolean
+  - empty_count
+  - fatal_error_message
+  - first_where
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - toggle_bool
+  - unowned_variable_capture
+
+line_length:
+  warning: 120
+  ignores_comments: true
+  ignores_urls: true
+
+custom_rules:
+  # SwiftPM's import check covers our own modules. This covers Apple's: pure modules
+  # may import only Foundation, simd and other pure modules.
+  pure_module_imports:
+    name: Pure module imports
+    included: "Packages/ShipcamKit/Sources/(ProjectModel|TimeMapping|CursorEngine|ZoomEngine)/"
+    regex: "^\\s*(@testable\\s+)?import\\s+(?!(Foundation|simd|ProjectModel|TimeMapping|CursorEngine|ZoomEngine)\\b)\\w+"
+    message: "Pure modules may import only Foundation, simd and other pure modules."
+    severity: error
+
+  no_print:
+    name: No print
+    included: "Packages/ShipcamKit/Sources/"
+    regex: "\\bprint\\("
+    match_kinds: identifier
+    message: "Use os.Logger in platform modules; return values or throw in pure ones."
+    severity: warning
