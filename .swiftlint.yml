@@ -24,11 +24,17 @@ line_length:
   warning: 120
   ignores_comments: true
   ignores_urls: true
+  ignores_multiline_strings: true # they hold data, such as JSON fixtures, that can't be wrapped
 
 identifier_name:
-  # Short keys from the data format (cursor.jsonl has one line per cursor sample, so
-  # keys are kept short). Codable properties must match their JSON keys.
-  excluded: [id, t, x, y, w, h, dx, dy]
+  # Short names from the data format (cursor.jsonl has one line per cursor sample, so
+  # keys are kept short). Codable properties and enum cases must match the JSON.
+  excluded: [id, t, x, y, w, h, dx, dy, up, fn]
+
+nesting:
+  # Format types mirror nested JSON, and a field's enum lives inside the type that
+  # owns it: TelemetryEvent.Bubble.Shape.
+  type_level: 2
 
 custom_rules:
   # SwiftPM's import check covers our own modules. This covers Apple's: pure modules
