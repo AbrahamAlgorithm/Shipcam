@@ -9,7 +9,8 @@
 .build/
 .swiftpm/
 
-# Xcode
+# Xcode (the project is generated from project.yml by XcodeGen)
+/Shipcam.xcodeproj/
 DerivedData/
 xcuserdata/
 *.xcuserstate

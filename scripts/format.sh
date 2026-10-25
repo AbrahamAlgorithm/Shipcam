@@ -6,4 +6,4 @@ cd "$(dirname "$0")/.."
 
 swiftlint lint --fix --quiet
 swift format --in-place --recursive --parallel \
-    Packages/ShipcamKit/Package.swift Packages/ShipcamKit/Sources Packages/ShipcamKit/Tests
+    App Packages/ShipcamKit/Package.swift Packages/ShipcamKit/Sources Packages/ShipcamKit/Tests

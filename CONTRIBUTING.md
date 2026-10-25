@@ -6,13 +6,15 @@ Thanks for your interest! Shipcam is in early development, so the code changes q
 
 - A Mac with Apple silicon running macOS 26.6 or later. The app itself will support macOS 14 and later.
 - Xcode 27 (CI uses Xcode 27.1).
-- SwiftLint 0.65.1: `brew install swiftlint`. CI pins this exact version.
+- SwiftLint 0.65.1 and XcodeGen 2.46.0: `brew install swiftlint xcodegen`. CI pins these exact versions.
 
 swift-format ships with Xcode as `swift format`, so there's nothing extra to install for it.
 
 ## Repository layout
 
 ```
+App/                     the macOS app target (SwiftUI)
+project.yml              XcodeGen spec that generates Shipcam.xcodeproj
 Packages/ShipcamKit/     Swift package with every module except the app target
   Sources/<Module>/      one folder per module
   Tests/<Module>Tests/   tests, using Swift Testing
@@ -20,7 +22,7 @@ scripts/                 format.sh and lint.sh
 .github/workflows/       CI
 ```
 
-The macOS app target is coming next.
+`Shipcam.xcodeproj` is generated and not committed. Change `project.yml` instead, then regenerate.
 
 ## Module rules
 
@@ -44,6 +46,15 @@ swift test --explicit-target-dependency-import-check error
 ```
 
 Write tests for any logic you add to a pure module, ideally before the code.
+
+To work on the app, generate the Xcode project and open it:
+
+```sh
+xcodegen
+open Shipcam.xcodeproj
+```
+
+The `Shipcam` scheme runs the app, and ⌘U runs every package test. Run `xcodegen` again after pulling changes to `project.yml`, or after adding or removing files in `App/`.
 
 ## Code style
 

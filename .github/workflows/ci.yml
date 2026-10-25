@@ -73,3 +73,30 @@ jobs:
         run: |
           scripts/format.sh
           git diff --exit-code
+
+  app:
+    name: App · generate and build
+    runs-on: xcode-27
+    timeout-minutes: 20
+    env:
+      # Same version as local development. Update both values together.
+      XCODEGEN_VERSION: 2.46.0
+      XCODEGEN_SHA256: 4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806
+    steps:
+      - uses: actions/checkout@v7
+
+      # XcodeGen finds its setting presets next to the binary, so keep the whole folder.
+      - name: Install XcodeGen
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/xcodegen.zip" \
+            "https://github.com/yonaskolb/XcodeGen/releases/download/$XCODEGEN_VERSION/xcodegen.zip"
+          echo "$XCODEGEN_SHA256  $RUNNER_TEMP/xcodegen.zip" | shasum -a 256 -c -
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/xcodegen/bin" >> "$GITHUB_PATH"
+
+      - name: Generate the Xcode project
+        run: xcodegen generate
+
+      - name: Build the app
+        # arch=arm64: on Apple silicon, plain platform=macOS also matches an x86_64 (Rosetta) destination.
+        run: xcodebuild build -quiet -project Shipcam.xcodeproj -scheme Shipcam -destination 'platform=macOS,arch=arm64'

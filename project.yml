@@ -1,0 +1,49 @@
+# XcodeGen spec for the Shipcam app. Run `xcodegen` to generate Shipcam.xcodeproj,
+# which is not committed: this file is the source of truth.
+
+name: Shipcam
+
+options:
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+
+packages:
+  ShipcamKit:
+    path: Packages/ShipcamKit
+
+targets:
+  Shipcam:
+    type: application
+    platform: macOS
+    sources:
+      - App
+    dependencies:
+      - package: ShipcamKit
+        product: ProjectModel
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.abrahamfolorunso.shipcam
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        # Info.plist is generated from these settings; there's no plist file to maintain.
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Shipcam
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.video
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Abraham Folorunso. MIT License."
+        # Required for notarization. No App Sandbox: the input event tap and
+        # Accessibility caret reading don't work inside it.
+        ENABLE_HARDENED_RUNTIME: YES
+        # Sign to run locally. Screen capture will need a stable signing identity,
+        # because macOS ties permissions such as Screen Recording to the signature.
+        CODE_SIGN_IDENTITY: "-"
+    scheme:
+      testTargets:
+        - package: ShipcamKit/ProjectModelTests
+        - package: ShipcamKit/TimeMappingTests
+        - package: ShipcamKit/CursorEngineTests
+        - package: ShipcamKit/ZoomEngineTests

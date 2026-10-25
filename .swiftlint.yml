@@ -2,6 +2,7 @@
 # swift-format (.swift-format), so rules that would fight it are turned off.
 
 included:
+  - App
   - Packages/ShipcamKit/Package.swift
   - Packages/ShipcamKit/Sources
   - Packages/ShipcamKit/Tests
@@ -48,7 +49,7 @@ custom_rules:
 
   no_print:
     name: No print
-    included: "Packages/ShipcamKit/Sources/"
+    included: "(App|Packages/ShipcamKit/Sources)/"
     regex: "\\bprint\\("
     match_kinds: identifier
     message: "Use os.Logger in platform modules; return values or throw in pure ones."
