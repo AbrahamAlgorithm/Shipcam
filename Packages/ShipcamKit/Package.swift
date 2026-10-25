@@ -41,6 +41,7 @@ let package = Package(
         .testTarget(name: "TimeMappingTests", dependencies: ["TimeMapping"]),
         .testTarget(name: "CursorEngineTests", dependencies: ["CursorEngine"]),
         .testTarget(name: "ZoomEngineTests", dependencies: ["ZoomEngine"]),
+        .testTarget(name: "RecorderCoreTests", dependencies: ["RecorderCore"]),
     ],
     swiftLanguageModes: [.v6]
 )

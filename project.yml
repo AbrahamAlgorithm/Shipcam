@@ -25,6 +25,8 @@ targets:
     dependencies:
       - package: ShipcamKit
         product: ProjectModel
+      - package: ShipcamKit
+        product: RecorderCore
     # Signing is set in this xcconfig, not under `settings` below: settings written
     # into the project override xcconfig files, including each developer's local one.
     configFiles:

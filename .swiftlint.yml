@@ -1,5 +1,7 @@
 # SwiftLint checks code quality. Layout (indentation, wrapping, spacing) belongs to
-# swift-format (.swift-format), so rules that would fight it are turned off.
+# swift-format (.swift-format), so rules that would fight it are turned off. One is
+# kept on purpose: opening_brace flags a `{` that swift-format pushed onto its own line
+# to fit a long signature. Put the parameters on separate lines instead.
 
 included:
   - App
