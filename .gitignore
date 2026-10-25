@@ -11,6 +11,7 @@
 
 # Xcode (the project is generated from project.yml by XcodeGen)
 /Shipcam.xcodeproj/
+/Config/Signing.local.xcconfig
 DerivedData/
 xcuserdata/
 *.xcuserstate

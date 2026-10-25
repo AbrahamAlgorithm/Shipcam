@@ -56,6 +56,22 @@ open Shipcam.xcodeproj
 
 The `Shipcam` scheme runs the app, and ⌘U runs every package test. Run `xcodegen` again after pulling changes to `project.yml`, or after adding or removing files in `App/`.
 
+### Signing with your own team
+
+Builds are ad-hoc signed by default, which is all you need to build and run the app. If you work on features that need macOS permissions, such as screen recording, sign with your own team. macOS remembers a granted permission by the app's signature, and an ad-hoc signature changes on every build.
+
+1. In Xcode, open Settings → Accounts, add your Apple ID (a free one works), then under Manage Certificates add an **Apple Development** certificate.
+2. Find your Team ID, the `OU` field of that certificate:
+   ```sh
+   security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject
+   ```
+3. Create `Config/Signing.local.xcconfig` (gitignored):
+   ```
+   DEVELOPMENT_TEAM = <your Team ID>
+   CODE_SIGN_IDENTITY = Apple Development
+   ```
+4. Run `xcodegen` again. On the first signed build, macOS asks whether `codesign` may use your key; choose **Always Allow**.
+
 ## Code style
 
 ```sh
@@ -79,6 +95,7 @@ swift-format decides layout. SwiftLint checks code quality, for example no force
 | `swift test` fails with `no such module 'Testing'` | Only the Command Line Tools are active. Install Xcode, then run `sudo xcode-select -s /Applications/Xcode.app`. |
 | SwiftLint crashes with `Loading sourcekitdInProc.framework … failed` | SwiftLint can't find Xcode's SourceKit. Install Xcode, or set `TOOLCHAIN_DIR=/Library/Developer/CommandLineTools`. |
 | A fresh `swift test` fails with `plugin for module 'TestingMacros' not found`, then passes when rerun | An intermittent build-system bug in the Command Line Tools 27. Rerun, or install Xcode. |
+| `security find-identity -v -p codesigning` shows `0 valid identities found`, or signing says the certificate isn't trusted | Apple's WWDR G3 intermediate certificate is missing. Download `AppleWWDRCAG3.cer` from apple.com/certificateauthority and double-click it to add it to your login keychain. |
 | CI's "Check formatting" step fails | A file wasn't formatted. Run `scripts/format.sh` and commit the result. |
 
 ## License

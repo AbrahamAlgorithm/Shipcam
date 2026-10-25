@@ -25,6 +25,11 @@ targets:
     dependencies:
       - package: ShipcamKit
         product: ProjectModel
+    # Signing is set in this xcconfig, not under `settings` below: settings written
+    # into the project override xcconfig files, including each developer's local one.
+    configFiles:
+      Debug: Config/Shipcam.xcconfig
+      Release: Config/Shipcam.xcconfig
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.abrahamfolorunso.shipcam
@@ -38,9 +43,6 @@ targets:
         # Required for notarization. No App Sandbox: the input event tap and
         # Accessibility caret reading don't work inside it.
         ENABLE_HARDENED_RUNTIME: YES
-        # Sign to run locally. Screen capture will need a stable signing identity,
-        # because macOS ties permissions such as Screen Recording to the signature.
-        CODE_SIGN_IDENTITY: "-"
     scheme:
       testTargets:
         - package: ShipcamKit/ProjectModelTests
