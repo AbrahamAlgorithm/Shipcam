@@ -4,8 +4,8 @@ Thanks for your interest! Shipcam is in early development, so the code changes q
 
 ## What you need
 
-- A Mac running macOS 26, ideally with Apple silicon. The app itself will support macOS 14 and later.
-- Xcode 26 (CI uses Xcode 26.6).
+- A Mac with Apple silicon running macOS 26.6 or later. The app itself will support macOS 14 and later.
+- Xcode 27 (CI uses Xcode 27.1).
 - SwiftLint 0.65.1: `brew install swiftlint`. CI pins this exact version.
 
 swift-format ships with Xcode as `swift format`, so there's nothing extra to install for it.
@@ -67,6 +67,7 @@ swift-format decides layout. SwiftLint checks code quality, for example no force
 | --- | --- |
 | `swift test` fails with `no such module 'Testing'` | Only the Command Line Tools are active. Install Xcode, then run `sudo xcode-select -s /Applications/Xcode.app`. |
 | SwiftLint crashes with `Loading sourcekitdInProc.framework … failed` | SwiftLint can't find Xcode's SourceKit. Install Xcode, or set `TOOLCHAIN_DIR=/Library/Developer/CommandLineTools`. |
+| A fresh `swift test` fails with `plugin for module 'TestingMacros' not found`, then passes when rerun | An intermittent build-system bug in the Command Line Tools 27. Rerun, or install Xcode. |
 | CI's "Check formatting" step fails | A file wasn't formatted. Run `scripts/format.sh` and commit the result. |
 
 ## License
