@@ -17,21 +17,17 @@ public struct TelemetryHeader: Equatable, Sendable {
 
     /// The captured display, window or area.
     public struct Source: Codable, Equatable, Sendable {
-        public var kind: Kind
+        public var kind: CaptureKind
         public var pxWidth: Int
         public var pxHeight: Int
         /// Pixels per point: 2 on a Retina display.
         public var scale: Double
 
-        public init(kind: Kind, pxWidth: Int, pxHeight: Int, scale: Double) {
+        public init(kind: CaptureKind, pxWidth: Int, pxHeight: Int, scale: Double) {
             self.kind = kind
             self.pxWidth = pxWidth
             self.pxHeight = pxHeight
             self.scale = scale
-        }
-
-        public enum Kind: String, Codable, Sendable {
-            case display, window, area
         }
     }
 }

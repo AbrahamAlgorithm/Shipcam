@@ -64,19 +64,35 @@ extension ProjectBundle {
 
     public func loadProject() throws -> Project {
         let data = try Data(contentsOf: projectFileURL)
-        // Check the version first: a newer format may not decode at all, and "saved
-        // by a newer version" is the clearer error.
-        let version = try JSONDecoder().decode(VersionProbe.self, from: data).schemaVersion
-        guard version <= ProjectFields.currentSchemaVersion else {
-            throw OpenError.unsupportedSchemaVersion(version)
-        }
-        return try ProjectJSON.decoder().decode(Project.self, from: data)
+        try Self.checkSchemaVersion(of: data, newestSupported: ProjectFields.currentSchemaVersion)
+        return try BundleJSON.decoder().decode(Project.self, from: data)
     }
 
     /// Writes `project.json` atomically: to a temporary file that then replaces the
     /// old one, so a crash mid-save leaves the previous version intact.
     public func save(_ project: Project) throws {
-        try ProjectJSON.encoder().encode(project).write(to: projectFileURL, options: .atomic)
+        try BundleJSON.encoder().encode(project).write(to: projectFileURL, options: .atomic)
+    }
+
+    public func loadMeta() throws -> RecordingMeta {
+        let data = try Data(contentsOf: url(for: .meta))
+        try Self.checkSchemaVersion(of: data, newestSupported: RecordingMeta.currentSchemaVersion)
+        return try BundleJSON.decoder().decode(RecordingMeta.self, from: data)
+    }
+
+    /// Writes `raw/meta.json` atomically. The recorder calls this as recording goes.
+    public func saveMeta(_ meta: RecordingMeta) throws {
+        try BundleJSON.encoder().encode(meta).write(to: url(for: .meta), options: .atomic)
+    }
+
+    /// Throws `unsupportedSchemaVersion` if `data` came from a newer Shipcam. Checked
+    /// before decoding: a newer format may not decode at all, and "saved by a newer
+    /// version" is the clearer error.
+    private static func checkSchemaVersion(of data: Data, newestSupported: Int) throws {
+        let version = try JSONDecoder().decode(VersionProbe.self, from: data).schemaVersion
+        guard version <= newestSupported else {
+            throw OpenError.unsupportedSchemaVersion(version)
+        }
     }
 }
 
@@ -84,8 +100,8 @@ private struct VersionProbe: Decodable {
     var schemaVersion: Int
 }
 
-/// JSON settings for `project.json`, chosen so the file reads well and diffs cleanly.
-enum ProjectJSON {
+/// JSON settings for the bundle's files, chosen so they read well and diff cleanly.
+enum BundleJSON {
     static func encoder() -> JSONEncoder {
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
